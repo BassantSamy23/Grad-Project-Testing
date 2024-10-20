@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.time.Duration;
+import java.util.List;
 
 public class CheckoutPage {
     WebDriver driver;
@@ -64,6 +65,9 @@ public class CheckoutPage {
     By successConfirmOrderMSG = By.xpath("//h1[contains(text(),\"Your order has been placed!\")]");
     By continueToTheHomePage = By.cssSelector("a[class=\"btn btn-primary\"]");
     By homePageIcon = By.cssSelector("img[class=\"img-responsive\"]");
+    By billingAddress_List = By.xpath("//*[@id=\"payment-existing\"]/select");
+    By deliveryAddress_List = By.xpath("//*[@id=\"shipping-existing\"]/select");
+
 
 
     //to verify that it takes you to the checkoutpage
@@ -280,5 +284,33 @@ public class CheckoutPage {
     {
         driver.findElement(By.id("button-payment-address")).click();
         return new CheckoutPage(driver);
+    }
+    public void validateAddressData(String name, String address, String cityInfo, String state, String country) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        wait.until(ExpectedConditions.elementToBeClickable(billingAddress_List));
+        Select select = new Select(driver.findElement(billingAddress_List));
+        List<WebElement> addressesData = select.getOptions();  //Collect all addresses data
+        boolean matchFound = false;
+        for (WebElement addressData : addressesData){                           //validate the new address matches an address in the list
+            if (addressData.getText().equals(name + ", " + address + ", " + cityInfo + ", " + state + ", " + country)){
+                matchFound = true;                          //There is an address that matches the new address
+                break;
+            }
+        }
+        Assert.assertTrue(matchFound);
+        driver.findElement(billingContinue).click();
+        WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(3));
+        wait1.until(ExpectedConditions.elementToBeClickable(deliveryAddress_List));
+        Select select1 = new Select(driver.findElement(deliveryAddress_List));
+        List<WebElement> addressesData1 = select1.getOptions();  //Collect all addresses data
+        boolean matchFound1 = false;
+        for (WebElement addressData1 : addressesData1){                           //validate the new address matches an address in the list
+            if (addressData1.getText().equals(name + ", " + address + ", " + cityInfo + ", " + state + ", " + country)){
+                matchFound1 = true;                          //There is an address that matches the new address
+                break;
+            }
+        }
+        Assert.assertTrue(matchFound);
+
     }
 }
