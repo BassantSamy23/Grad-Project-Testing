@@ -33,7 +33,7 @@ public class E2E {
         homePage = new HomePage(driver);
     }
 
-    String EmailAddress = "new204@gmail.com";
+    String EmailAddress = "new320@gmail.com";
 
     @Test(priority = 1)
     public void successful_register(){
