@@ -32,7 +32,7 @@ public class CheckoutTest {
  public void userLoginThenNavigateToHomePage ()
  {
   loginPage.navigateToLogin();
-  loginPage.login("new300@gmail.com","11111");
+  loginPage.login("new330@gmail.com","11111");
   homePage.navigateToHomePage();
  }
 
